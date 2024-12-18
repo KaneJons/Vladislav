@@ -3,7 +3,6 @@
 
 using namespace std; // Использование пространства имён std для упрощения доступа к стандартным функциям.
 
-
 // Функция для вывода матрицы.
 void printMatrix(int** matrix, int rows, int cols) {
     // Цикл по строкам матрицы.
@@ -18,52 +17,35 @@ void printMatrix(int** matrix, int rows, int cols) {
 
 // Функция обработки матрицы.
 void processMatrix(int** matrix, int rows, int cols) {
-    // Инициализация переменных для хранения максимального и минимального элементов матрицы.
-    int maxElement = matrix[0][0];
-    int minElement = matrix[0][0];
-
-    // Переменные для хранения позиций максимального и минимального элементов.
-    int maxRow = 0, maxCol = 0;
-    int minRow = 0, minCol = 0;
-
+    
     // Переменные для подсчёта количества положительных, отрицательных и нулевых элементов.
-    int posCount = 0, negCount = 0, zeroCount = 0;
+    int posCount = 0, negCount = 0, zeroCount = 0, temp;
 
     // Проход по каждому элементу матрицы.
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            int value = matrix[i][j]; // Текущий элемент матрицы.
 
             // Подсчёт положительных, отрицательных и нулевых элементов.
-            if (value > 0) posCount++; // Увеличиваем счётчик положительных элементов.
-            else if (value < 0) negCount++; // Увеличиваем счётчик отрицательных элементов.
-            else zeroCount++; // Увеличиваем счётчик нулевых элементов.
-
-            // Проверка, является ли текущий элемент максимальным.
-            if (value > maxElement) {
-                maxElement = value; // Обновляем значение максимального элемента.
-                maxRow = i; // Сохраняем строку максимального элемента.
-                maxCol = j; // Сохраняем столбец максимального элемента.
+            if (matrix[i][j] > 0) posCount++;
+            else if (matrix[i][j] < 0) negCount++;
+            else zeroCount++;
+            
+            if (matrix[i][j] > matrix[0][0]) //нахождение максимального элемента с сменой первого элемента
+            {
+                temp = matrix[0][0];
+                matrix[0][0] = matrix[i][j];
+                matrix[i][j] = temp;
             }
 
-            // Проверка, является ли текущий элемент минимальным.
-            if (value < minElement) {
-                minElement = value; // Обновляем значение минимального элемента.
-                minRow = i; // Сохраняем строку минимального элемента.
-                minCol = j; // Сохраняем столбец минимального элемента.
+            if (matrix[i][j] < matrix[rows - 1][cols - 1])//нахождение минимального элемента со сменой последеним
+            {
+                temp = matrix[rows - 1][cols - 1];
+                matrix[rows - 1][cols -1] = matrix[i][j];
+                matrix[i][j] = temp;
             }
+           
         }
     }
-
-    // Обмен значениями максимального элемента и первого элемента матрицы.
-    int temp = matrix[0][0];
-    matrix[0][0] = matrix[maxRow][maxCol];
-    matrix[maxRow][maxCol] = temp;
-
-    // Обмен значениями минимального элемента и последнего элемента матрицы.
-    temp = matrix[rows - 1][cols - 1];
-    matrix[rows - 1][cols - 1] = matrix[minRow][minCol];
-    matrix[minRow][minCol] = temp;
 
     // Вывод обработанной матрицы.
     cout << "Обработанная матрица:\n";
